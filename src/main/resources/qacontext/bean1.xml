@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"> <!-- bean definitions here -->
+    <!-- 1 配置bean-->
+    <bean id="book" class="net.bill99.book.Book"></bean>
+    <bean id="myBook" class="net.bill99.aop.MyBook"></bean>
+    <!-- 2 配置aop-->
+    <aop:config>
+        <!-- 2.1 配置切入点-->
+        <aop:pointcut expression="execution(* net.bill99.book.Book.*(..))" id="book_pointcut"></aop:pointcut>
+        <!-- 2.2 配置切面,将增强配置到方法上-->
+        <aop:aspect ref="myBook">
+            <aop:before method="before" pointcut-ref="book_pointcut"></aop:before>
+            <aop:after-throwing method="error" pointcut-ref="book_pointcut"></aop:after-throwing>
+        </aop:aspect>
+    </aop:config>
+</beans>
